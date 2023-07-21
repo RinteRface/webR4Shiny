@@ -1,0 +1,16 @@
+Package: webR4Shiny
+Title: Setup 'webR' Compatible Infrastructure for your Shiny App
+Version: 0.0.0.9000
+Authors@R: 
+    person("David", "Granjon", , "dgranjon@ymail.com", role = c("aut", "cre"))
+Description: Setup all the neccessary file infrastructure to be able to
+    run your Shiny app in the browser (serveless) with the power of
+    wasm and webR.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    jsonlite,
+    usethis,
+    utils

@@ -1,0 +1,2 @@
+serve:
+			Rscript ./serve.R
