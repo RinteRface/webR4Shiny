@@ -1,9 +1,7 @@
 #'@keywords internal
 copy_assets <- function(type, copy_path) {
-  files_path <- system.file(type, package = "webR4Shiny")
-  lapply(seq_along(files_path), function(i) {
-    file.copy(files_path[[i]], copy_path)
-  })
+  files_path <- list.files(system.file(type, package = "webR4Shiny"))
+  file.copy(from = files_path, to = copy_path, recursive = TRUE)
 }
 
 #'@keywords internal
