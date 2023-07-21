@@ -37,12 +37,7 @@ init_shiny_webr <- function(path = "./webr", copy_app_files = TRUE) {
 
   # Put everything in webR to avoid adding
   # to many files in the .Rbuildignore
-  usethis::use_build_ignore(
-    c(
-      cicd_ignore,
-      sub("./", "", path)
-    )
-  )
+  usethis::use_build_ignore(sub("./", "", path))
 }
 
 #' Update a webR compatible scaffold
