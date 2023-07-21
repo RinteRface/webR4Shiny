@@ -113,7 +113,7 @@ import('https://webr.r-wasm.org/latest/webr.mjs').then(async ({ WebR }) => {
   }
 
   // Debug files in webR VFS
-  await webR.writeConsole(`list.files("/home/web_user/app")`)
+  await webR.writeConsole(`list.files("/home/web_user/app")`);
 
   // Install and run shiny
   await webR.evalRVoid(`

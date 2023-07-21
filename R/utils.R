@@ -62,7 +62,7 @@ write_app_files_to_js <- function(path) {
 
   # List all files recursively and get full path
   app_files <- gsub(
-    "\"",
+    "\"./webr/",
     "'",
     jsonlite::toJSON(
       list.files(
