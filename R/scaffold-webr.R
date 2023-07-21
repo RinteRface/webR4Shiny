@@ -31,7 +31,7 @@ init_shiny_webr <- function(path = "./webr", copy_app_files = TRUE) {
     copy_local_app_assets(file.path(path, "app"))
     # Get list of all app files and
     # inject them inside webr-shiny.js
-    write_app_files_to_js()
+    write_app_files_to_js(path)
   }
 
 
