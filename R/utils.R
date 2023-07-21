@@ -31,6 +31,8 @@ copy_local_app_assets <- function(path) {
   file.copy("./inst", path, recursive = TRUE)
   file.copy("./DESCRIPTION", path)
   file.copy("./NAMESPACE", path)
+
+  # This does not necessarily exist ...
   if (file.exists("./app.R")) {
     file.copy("./app.R", path)
   }
@@ -42,15 +44,17 @@ copy_local_app_assets <- function(path) {
 #' generate a list of file to write in
 #' the webR virtual file system
 #'
+#' @param path Path containing the Shiny webR installation.
+#'
 #'@keywords internal
-write_app_files_to_js <- function() {
+write_app_files_to_js <- function(path) {
   # Reset js file
   file.copy(
     system.file("js/webr-shiny.js", package = "webR4Shiny"),
     "./webr"
   )
   # Read file
-  shiny_js <- "./webr/webr-shiny.js"
+  shiny_js <- file.path(path, "webr-shiny.js")
   plop <- readLines(shiny_js)
 
   # List all files recursively and get full path
@@ -58,7 +62,11 @@ write_app_files_to_js <- function() {
     "\"",
     "'",
     jsonlite::toJSON(
-      list.files("app", recursive = TRUE, full.names = TRUE)
+      list.files(
+        file.path(path, app),
+        recursive = TRUE,
+        full.names = TRUE
+      )
     )
   )
 

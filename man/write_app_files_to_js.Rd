@@ -4,7 +4,10 @@
 \alias{write_app_files_to_js}
 \title{Write app files to webr-shiny.js}
 \usage{
-write_app_files_to_js()
+write_app_files_to_js(path)
+}
+\arguments{
+\item{path}{Path containing the Shiny webR installation.}
 }
 \description{
 This allows to programmatically
