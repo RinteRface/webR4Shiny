@@ -1,6 +1,9 @@
 #'@keywords internal
 copy_assets <- function(type, copy_path) {
-  files_path <- list.files(system.file(type, package = "webR4Shiny"))
+  files_path <- list.files(
+    system.file(type, package = "webR4Shiny"),
+    full.names = TRUE
+  )
   file.copy(from = files_path, to = copy_path, recursive = TRUE)
 }
 
