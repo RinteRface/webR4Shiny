@@ -54,7 +54,7 @@ init_shiny_webr <- function(path = "./webr", copy_app_files = TRUE) {
 #'
 #' @export
 update_shiny_webr <- function(path, copy_app_files = TRUE) {
-  reset_shiny_webr(path)
+  remove_shiny_webr(path)
   init_shiny_webr(path, copy_app_files)
 }
 
@@ -63,7 +63,7 @@ update_shiny_webr <- function(path, copy_app_files = TRUE) {
 #' @param path Path to cleanup containing the webR installation.
 #'
 #' @export
-reset_shiny_webr <- function(path) {
+remove_shiny_webr <- function(path) {
   # Prompt user choice
   allow_delete <- menu(
     c("Yes", "No"),
