@@ -62,13 +62,17 @@ write_app_files_to_js <- function(path) {
 
   # List all files recursively and get full path
   app_files <- gsub(
-    sprintf("\"%s/", path),
-    "'",
-    jsonlite::toJSON(
-      list.files(
-        file.path(path, "app"),
-        recursive = TRUE,
-        full.names = TRUE
+    sprintf("./%s/", path),
+    "",
+    gsub(
+      "\"",
+      "'",
+      jsonlite::toJSON(
+        list.files(
+          file.path(path, "app"),
+          recursive = TRUE,
+          full.names = TRUE
+        )
       )
     )
   )
