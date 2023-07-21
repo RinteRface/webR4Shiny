@@ -42,7 +42,7 @@ reset_webr <- function() {
     c("Yes", "No"),
     title = "Do you want to cleanup your webR installation in ./webr?"
   ) == 1
-  if (answer) {
+  if (allow_delete) {
     unlink("./webr", recursive = TRUE)
   } else {
     message("Aborting cleanup ...")
