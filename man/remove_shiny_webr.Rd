@@ -4,7 +4,7 @@
 \alias{remove_shiny_webr}
 \title{Cleanup the webR installation}
 \usage{
-remove_shiny_webr(path)
+remove_shiny_webr(path = "./webr")
 }
 \arguments{
 \item{path}{Path to cleanup containing the webR installation.}

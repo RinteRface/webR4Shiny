@@ -4,7 +4,7 @@
 \alias{update_shiny_webr}
 \title{Update a webR compatible scaffold}
 \usage{
-update_shiny_webr(path, copy_app_files = TRUE)
+update_shiny_webr(path = "./webr", copy_app_files = TRUE)
 }
 \arguments{
 \item{path}{Path to setup the webR installation.}
