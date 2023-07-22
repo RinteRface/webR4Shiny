@@ -106,21 +106,27 @@ import('https://webr.r-wasm.org/latest/webr.mjs').then(async ({ WebR }) => {
   await webR.FS.mkdir('/home/web_user/app');
   await webR.FS.mkdir('/home/web_user/app/R');
   await webR.FS.mkdir('/home/web_user/app/inst');
+  await webR.FS.mkdir('/home/web_user/app/inst/app');
+  await webR.FS.mkdir('/home/web_user/app/inst/app/www');
 
   // <APP_FILES>
   for (const file of appFiles) {
-    await fetchToWebR(file, '/home/web_user/'+ file);
+    await fetchToWebR(file, '/home/web_user/' + file);
   }
 
   // Debug files in webR VFS
-  await webR.writeConsole(`list.files("/home/web_user/app")`);
+  await webR.writeConsole(`list.files("/home/web_user/app", recursive = TRUE)`);
 
   // Install and run shiny
   await webR.evalRVoid(`
-    webr::install(c("shiny"), repos="https://webr-cran.rinterface.com/")
+    webr::install(c("shiny", "pkgload"), repos="https://webr-cran.rinterface.com/")
   `);
+
+  // Since Shiny 1.5, if you run a shiny app with a subdir called R/, it will load every function stored in it automatically ... so no need to
+  // manually load it :)
   webR.writeConsole(`
     library(shiny)
+    library(golem)
     options(shiny.trace = TRUE)
     runApp('app')
   `);

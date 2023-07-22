@@ -32,13 +32,24 @@ copy_local_app_assets <- function(path) {
   # copy major R package elements
   file.copy("./R", path, recursive = TRUE)
   file.copy("./inst", path, recursive = TRUE)
-  file.copy("./DESCRIPTION", path)
-  file.copy("./NAMESPACE", path)
+  # We don't need anything else since we can't
+  # install the package locally due to webR limitations ...
+}
 
-  # This does not necessarily exist ...
-  if (file.exists("./app.R")) {
-    file.copy("./app.R", path)
-  }
+#' Comment out favicon
+#'
+#' In app_ui.R, golem uses favicon,
+#' which does not work well with webR,
+#' likely because of the fs package (to check).
+#' This function will comment this line so the app UI
+#' prints correctly.
+#'
+#'@keywords internal
+comment_golem_favicon <- function(path) {
+  app_ui_file <- file.path(path, "R/app_ui.R")
+  tmp_ui <- readLines(app_ui_file)
+  tmp_ui <- sub("favicon", "# favicon", tmp_ui)
+  writeLines(tmp_ui, app_ui_file)
 }
 
 #' Write app files to webr-shiny.js

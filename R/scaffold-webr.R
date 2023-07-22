@@ -17,7 +17,8 @@ init_shiny_webr <- function(path = "./webr", copy_app_files = TRUE) {
       update your local installation."
     )
   } else {
-    dir.create(file.path(path, "app"), recursive = TRUE)
+    app_path <- file.path(path, "app")
+    dir.create(app_path, recursive = TRUE)
   }
 
   # Copy webR assets
@@ -29,9 +30,18 @@ init_shiny_webr <- function(path = "./webr", copy_app_files = TRUE) {
   if (copy_app_files) {
     # Copy local app assets
     copy_local_app_assets(file.path(path, "app"))
+    # Move app.R to the right folder as we don't use
+    # the local package file but the webR4Shiny shim ... because
+    # pkgload::load_all() does not work with webR at the moment.
+    # "It is not possible to install packages from source in webR"...
+    # https://docs.r-wasm.org/webr/latest/packages.html#building-r-packages-for-webr
+    file.rename(file.path(path, "app.R"), file.path(app_path, "app.R"))
     # Get list of all app files and
     # inject them inside webr-shiny.js
     write_app_files_to_js(path)
+
+    # Golem/webR compatibility shims
+    comment_golem_favicon(app_path)
   }
 
 
