@@ -42,6 +42,7 @@ init_shiny_webr <- function(path = "./webr", copy_app_files = TRUE) {
 
     # Golem/webR compatibility shims
     comment_golem_favicon(app_path)
+    edit_app_sys(app_path)
   }
 
 

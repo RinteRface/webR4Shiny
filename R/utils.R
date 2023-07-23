@@ -29,8 +29,12 @@ copy_deploy_assets <- function(path) {
 
 #'@keywords internal
 copy_local_app_assets <- function(path) {
+  # Exclude disable autoload from copy
+  exlude <- list.files("./R", pattern = ".autoload", full.names = TRUE)
+  r_files <- list.files("./R", full.names = TRUE)
+  r_files <- r_files[!r_files %in% exlude]
   # copy major R package elements
-  file.copy("./R", path, recursive = TRUE)
+  file.copy(r_files, path, recursive = TRUE)
   file.copy("./inst", path, recursive = TRUE)
   # We don't need anything else since we can't
   # install the package locally due to webR limitations ...
@@ -50,6 +54,29 @@ comment_golem_favicon <- function(path) {
   tmp_ui <- readLines(app_ui_file)
   tmp_ui <- sub("favicon", "# favicon", tmp_ui)
   writeLines(tmp_ui, app_ui_file)
+}
+
+#' Edit golem internal app_sys
+#'
+#' app_sys calls system.file on the local
+#' package which can't work because the pkg
+#' can't be install locally due to webR restrictions.
+#' We overwrite it by a simple function which returns
+#' the provided path prefixed by inst, where app assets
+#' are found in a golem app.
+#'
+#'@keywords internal
+edit_app_sys <- function(path) {
+  app_config_file <- file.path(path, "R/app_config.R")
+  tmp <- readLines(app_config_file)
+
+  # Replace line that fails with webR (system.file)
+  # since we can't install the local package.
+  fun_def_index <- grep("app_sys", tmp)[[1]]
+  replace_index <- fun_def_index + 1
+  tmp[[replace_index]] <- "  # system.file with local pkg does not work
+  sprintf(\"inst/%s\", list(...))"
+  writeLines(tmp, app_config_file)
 }
 
 #' Write app files to webr-shiny.js
