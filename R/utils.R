@@ -34,7 +34,7 @@ copy_local_app_assets <- function(path) {
   r_files <- list.files("./R", full.names = TRUE)
   r_files <- r_files[!r_files %in% exlude]
   # copy major R package elements
-  file.copy(r_files, path, recursive = TRUE)
+  file.copy(r_files, file.path(path, "R"), recursive = TRUE)
   file.copy("./inst", path, recursive = TRUE)
   file.copy("./DESCRIPTION", path)
   # We don't need anything else since we can't
@@ -140,7 +140,7 @@ write_webr_js <- function(path) {
   # Add app deps
   conn <- set_app_deps(file.path(path, "app"), conn)
   # Add app files
-  conn <- set_app_files(shiny_js, conn)
+  conn <- set_app_files(path, conn)
 
   # Write
   writeLines(conn, shiny_js)
