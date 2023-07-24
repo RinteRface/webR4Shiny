@@ -138,7 +138,7 @@ write_webr_js <- function(path) {
   shiny_js <- file.path(path, "webr-shiny.js")
   conn <- readLines(shiny_js)
   # Add app deps
-  conn <- set_app_deps(shiny_js, conn)
+  conn <- set_app_deps(file.path(path, "DESCRIPTION"), conn)
   # Add app files
   conn <- set_app_files(shiny_js, conn)
 
