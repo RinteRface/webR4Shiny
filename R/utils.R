@@ -148,7 +148,7 @@ write_webr_js <- function(path) {
 #'
 #'@keywords internal
 set_app_deps <- function(path, conn) {
-  deps <- find_pkg_imports(path)
+  deps <- find_pkg_imports(file.path(path, "app"))
   # Write to original file at the given location
   sub(
     "# <APP_DEPS>",
