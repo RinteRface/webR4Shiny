@@ -125,14 +125,15 @@ write_webr_js <- function(path) {
   )
 
   # Read file
-  conn <- readLines(file.path(path, "webr-shiny.js"))
+  shiny_js <- file.path(path, "webr-shiny.js")
+  conn <- readLines(shiny_js)
   # Add app deps
   conn <- set_app_deps(path, conn)
   # Add app files
   conn <- set_app_files(path, conn)
 
   # Write
-  writeLines(tmp, conn)
+  writeLines(conn, shiny_js)
 }
 
 #' Get app package dependencies to webr-shiny.js
