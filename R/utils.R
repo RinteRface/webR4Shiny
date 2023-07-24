@@ -36,6 +36,7 @@ copy_local_app_assets <- function(path) {
   # copy major R package elements
   file.copy(r_files, path, recursive = TRUE)
   file.copy("./inst", path, recursive = TRUE)
+  file.copy("./DESCRIPTION", path)
   # We don't need anything else since we can't
   # install the package locally due to webR limitations ...
 }
