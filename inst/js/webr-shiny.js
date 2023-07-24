@@ -127,7 +127,7 @@ import('https://webr.r-wasm.org/latest/webr.mjs').then(async ({ WebR }) => {
   webR.writeConsole(`
     # <APP_DEPS> # DON'T REMOVE
     options(shiny.trace = TRUE)
-    runApp("app"")
+    runApp("app")
   `);
 
   // Setup listener for service worker messages
