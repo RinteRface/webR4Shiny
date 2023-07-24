@@ -106,7 +106,17 @@ find_pkg_imports <- function(path) {
     }
   }
   imports_start <- imports_start + 1
-  trimws(gsub(",", "", desc[imports_start:imports_end]))
+
+  # cleanup package versions
+  tmp_res <- strsplit(desc[imports_start:imports_end], " ")
+  tmp_res <- vapply(
+    tmp_res,
+    function(el) {
+      el[[length(el) - 2]]
+    },
+    FUN.VALUE = character(1)
+  )
+  trimws(gsub("),", "", tmp_res))
 }
 
 #' Write shiny-webr.js file
@@ -128,9 +138,9 @@ write_webr_js <- function(path) {
   shiny_js <- file.path(path, "webr-shiny.js")
   conn <- readLines(shiny_js)
   # Add app deps
-  conn <- set_app_deps(path, conn)
+  conn <- set_app_deps(shiny_js, conn)
   # Add app files
-  conn <- set_app_files(path, conn)
+  conn <- set_app_files(shiny_js, conn)
 
   # Write
   writeLines(conn, shiny_js)
@@ -149,7 +159,7 @@ write_webr_js <- function(path) {
 #'
 #'@keywords internal
 set_app_deps <- function(path, conn) {
-  deps <- find_pkg_imports(file.path(path, "app"))
+  deps <- find_pkg_imports(path)
   # Write to original file at the given location
   sub(
     "# <APP_DEPS>",

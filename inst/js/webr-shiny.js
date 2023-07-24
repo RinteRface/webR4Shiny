@@ -119,7 +119,7 @@ import('https://webr.r-wasm.org/latest/webr.mjs').then(async ({ WebR }) => {
 
   // Install and run shiny
   await webR.evalRVoid(`
-    webr::install(c("shiny", "pkgload"), repos="https://webr-cran.rinterface.com/")
+    webr::install(c("shiny"), repos="https://webr-cran.rinterface.com/")
   `);
 
   // Since Shiny 1.5, if you run a shiny app with a subdir called R/, it will load every function stored in it automatically ... so no need to
