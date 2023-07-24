@@ -109,7 +109,7 @@ import('https://webr.r-wasm.org/latest/webr.mjs').then(async ({ WebR }) => {
   await webR.FS.mkdir('/home/web_user/app/inst/app');
   await webR.FS.mkdir('/home/web_user/app/inst/app/www');
 
-  // <APP_FILES>
+  // <APP_FILES> // DON'T REMOVE
   for (const file of appFiles) {
     await fetchToWebR(file, '/home/web_user/' + file);
   }
@@ -125,10 +125,9 @@ import('https://webr.r-wasm.org/latest/webr.mjs').then(async ({ WebR }) => {
   // Since Shiny 1.5, if you run a shiny app with a subdir called R/, it will load every function stored in it automatically ... so no need to
   // manually load it :)
   webR.writeConsole(`
-    library(shiny)
-    library(golem)
+    # <APP_DEPS> # DON'T REMOVE
     options(shiny.trace = TRUE)
-    runApp('app')
+    runApp("app"")
   `);
 
   // Setup listener for service worker messages

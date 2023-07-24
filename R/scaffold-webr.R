@@ -37,8 +37,9 @@ init_shiny_webr <- function(path = "./webr", copy_app_files = TRUE) {
     # https://docs.r-wasm.org/webr/latest/packages.html#building-r-packages-for-webr
     file.rename(file.path(path, "app.R"), file.path(app_path, "app.R"))
     # Get list of all app files and
-    # inject them inside webr-shiny.js
-    write_app_files_to_js(path)
+    # inject them inside webr-shiny.js as well
+    # as package dependencies.
+    write_webr_js(path)
 
     # Golem/webR compatibility shims
     comment_golem_favicon(app_path)

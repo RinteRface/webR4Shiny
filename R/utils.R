@@ -79,25 +79,93 @@ edit_app_sys <- function(path) {
   writeLines(tmp, app_config_file)
 }
 
-#' Write app files to webr-shiny.js
+#' Find package imports
+#'
+#' Read the DESCRIPTION file and look for
+#' any imports. Returns a vector of R dependencies.
+#'
+#'@keywords internal
+find_pkg_imports <- function(path) {
+  desc <- readLines(file.path(path, "DESCRIPTION"))
+  imports_start <- grep("^Imports: (.*)", desc)
+  if (length(imports_start) == 0) {
+    stop("This package does not have any 'Imports' field.")
+  }
+  imports_end <- NULL
+  for (i in seq_along(desc)) {
+    if (imports_start + i <= length(desc)) {
+      tmp <- grepl("    ", desc[[imports_start + i]])
+      if (!tmp) {
+        imports_end <- i + imports_start - 1
+        break
+      }
+    } else {
+      imports_end <- i + imports_start - 1
+      break
+    }
+  }
+  imports_start <- imports_start + 1
+  trimws(gsub(",", "", desc[imports_start:imports_end]))
+}
+
+#' Write shiny-webr.js file
+#'
+#' Write app deps and files with  \link{set_app_deps} and
+#' \link{set_app_files}.
+#'
+#' @param path Path containing the Shiny webR installation.
+#'
+#'@keywords internal
+write_webr_js <- function(path) {
+  # Reset js file only if update it FALSE
+  file.copy(
+    system.file("js/webr-shiny.js", package = "webR4Shiny"),
+    path
+  )
+
+  # Read file
+  conn <- readLines(file.path(path, "webr-shiny.js"))
+  # Add app deps
+  conn <- set_app_deps(conn)
+  # Add app files
+  conn <- set_app_files(path, conn)
+
+  # Write
+  writeLines(tmp, conn)
+}
+
+#' Get app package dependencies to webr-shiny.js
+#'
+#' This allows to programmatically
+#' write all the necessaries app dependencies to
+#' the JS file and load them with library. This is necessary
+#' because we can't install the local package from source so
+#' we can't benefit from the NAMESPACE (imports).
+#'
+#' @inheritParams write_webr_js
+#' @param conn webr-shiny.js content.
+#'
+#'@keywords internal
+set_app_deps <- function(path, conn) {
+  deps <- find_pkg_imports(path)
+  # Write to original file at the given location
+  sub(
+    "# <APP_DEPS>",
+    paste(sprintf("library(%s)", deps), collapse = "\n  "),
+    conn
+  )
+}
+
+#' Get app files within the webR installation
 #'
 #' This allows to programmatically
 #' generate a list of file to write in
 #' the webR virtual file system
 #'
-#' @param path Path containing the Shiny webR installation.
+#' @inheritParams set_app_deps
 #'
 #'@keywords internal
-write_app_files_to_js <- function(path) {
-  # Reset js file
-  file.copy(
-    system.file("js/webr-shiny.js", package = "webR4Shiny"),
-    "./webr"
-  )
-  # Read file
-  shiny_js <- file.path(path, "webr-shiny.js")
-  plop <- readLines(shiny_js)
-
+set_app_files <- function(path, conn) {
   # List all files recursively and get full path
   app_files <- gsub(
     sprintf("%s/", path),
@@ -115,13 +183,10 @@ write_app_files_to_js <- function(path) {
     )
   )
 
-  # Replace anchor by relevent files from R
-  tmp_plop <- sub(
+  # Replace anchor by relevant files from R
+  sub(
     "// <APP_FILES>",
     sprintf("const appFiles = %s;", app_files),
-    plop
+    conn
   )
-
-  # Write to original file
-  writeLines(tmp_plop, shiny_js)
 }
