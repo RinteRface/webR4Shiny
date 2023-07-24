@@ -110,14 +110,13 @@ find_pkg_imports <- function(path) {
 
   # cleanup package versions
   tmp_res <- strsplit(desc[imports_start:imports_end], " ")
-  tmp_res <- vapply(
-    tmp_res,
-    function(el) {
+  vapply(tmp_res, function(el) {
+    if (length(el) == 7) {
       el[[length(el) - 2]]
-    },
-    FUN.VALUE = character(1)
-  )
-  trimws(gsub("),", "", tmp_res))
+    } else {
+      gsub(",", "", tail(el, n = 1))
+    }
+  }, FUN.VALUE = character(1))
 }
 
 #' Write shiny-webr.js file
@@ -162,9 +161,15 @@ write_webr_js <- function(path) {
 set_app_deps <- function(path, conn) {
   deps <- find_pkg_imports(path)
   # Write to original file at the given location
-  sub(
+  conn <- sub(
     "# <APP_DEPS>",
     paste(sprintf("library(%s)", deps), collapse = "\n  "),
+    conn
+  )
+
+  sub(
+    "<PKG_INSTALL>",
+    paste0("c(", paste(sprintf("\"%s\"", deps), collapse = ","), ")"),
     conn
   )
 }
