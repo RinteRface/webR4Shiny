@@ -34,6 +34,7 @@ copy_local_app_assets <- function(path) {
   r_files <- list.files("./R", full.names = TRUE)
   r_files <- r_files[!r_files %in% exlude]
   # copy major R package elements
+  dir.create(file.path(path, "R"))
   file.copy(r_files, file.path(path, "R"), recursive = TRUE)
   file.copy("./inst", path, recursive = TRUE)
   file.copy("./DESCRIPTION", path)
