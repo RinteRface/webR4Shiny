@@ -11,7 +11,7 @@ Link your repo to Netlify and deploy the `./webr` folder only.
 
 ## Notes
 
-Don't forget that there a few tweaks necessary to make it possible to work:
+Don't forget that there are few tweaks necessary to make it possible to work:
 
 - We can't use `pkgload::load_all()` as in the usual `{golem}`
 `app.R` file because local packages can't be installed on webR (we would need

@@ -2,6 +2,15 @@
 Setup webR compatible infrastructure in your Shiny package project. This package is based on George Stagg's work around `{webR}`, particularly
 this [repository](https://github.com/georgestagg/shiny-standalone-webr-demo) for deploying Shiny apps on Netlify.
 
+What does `{golem4Shiny}`? Essentially, it:
+
+- Copies relevant part of the `{golem}` app (`R`, `inst`) into the folder of your choice, default being `./webR`.
+- Tweaks some of the `{golem}` copied files. Importantly, this __does not impact__ the main app files, only the copy located in `./webR`.
+- Adds a slightly modified version of the JS technology to run webR and adapt with Shiny, originally [provided](https://github.com/georgestagg/shiny-standalone-webr-demo) by George Stagg.
+- Adds a makefile to run the app locally and test.
+
+An example app is deployed [here](https://golem-webr.rinterface.com/) at https://golem-webr.rinterface.com/.
+
 ## Installation
 
 To get `{webR4Shiny}`:
